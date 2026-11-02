@@ -106,7 +106,7 @@ canvas{display:block;width:100%;height:370px;touch-action:none;background:repeat
   <div class="muted">A chave fica somente nesta sessão do navegador. Para obter uma chave, usa o Google AI Studio. Não compartilhes tua chave com ninguém.</div>
   <div class="muted"><a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Abrir Google AI Studio para criar uma chave</a></div>
 </div>
-<div class="status" id="status">A conversão por IA requer internet e uma chave do Google AI Studio. Revê sempre o resultado.</div>
+<div class="status" id="status">A conversão de manuscrito requer internet e uma chave pessoal do Google AI Studio. Sem essa chave, o botão não consegue transcrever. Revê sempre o resultado.</div>
 <textarea class="typed" id="typed" placeholder="Texto digitado ou convertido..."></textarea>
 </section></div>
 <div id="view-library" class="hidden">
@@ -137,6 +137,29 @@ canvas{display:block;width:100%;height:370px;touch-action:none;background:repeat
 <div class="row"><button id="connectGoogle">Conectar Google</button><button class="secondary" id="syncGoogle" disabled>Enviar ao Drive</button><button class="secondary" id="restoreGoogle" disabled>Restaurar do Drive</button><button class="secondary" id="disconnectGoogle">Desconectar</button></div>
 <div class="status" id="driveStatus">Cria um OAuth Client ID do tipo Aplicativo da Web no Google Cloud Console. O caderno precisa estar publicado num endereço HTTPS autorizado.</div></div>
 </section></div>
+<div id="view-calendar" class="hidden">
+ <section class="panel">
+  <div class="row between"><div><h2>Calendário acadêmico</h2><div class="muted">Visualiza as datas de provas e trabalhos cadastradas.</div></div><span class="pill" id="calendarYearLabel"></span></div>
+  <div class="row between" style="margin-top:12px"><button class="secondary" id="prevMonth">← Mês anterior</button><strong id="monthLabel"></strong><button class="secondary" id="nextMonth">Próximo mês →</button></div>
+  <div class="calendar-grid" id="calendarGrid" aria-label="Calendário mensal"></div>
+  <p class="muted">Os dias marcados possuem pelo menos uma prova ou trabalho. Toca em um dia marcado para ver as atividades.</p>
+ </section>
+</div>
+<div id="view-assessments" class="hidden">
+ <section class="panel">
+  <h2>Provas e trabalhos</h2><p class="muted">Registra avaliações, entregas e outros compromissos acadêmicos.</p>
+  <div class="grid2">
+   <div class="field"><label for="assessmentTitle">Nome da atividade</label><input id="assessmentTitle" type="text" placeholder="Ex.: Prova de Política Social"></div>
+   <div class="field"><label for="assessmentType">Tipo</label><select id="assessmentType"><option>Prova</option><option>Trabalho</option><option>Seminário</option><option>Leitura / entrega</option><option>Outro</option></select></div>
+   <div class="field"><label for="assessmentDate">Data</label><input id="assessmentDate" type="date"></div>
+   <div class="field"><label for="assessmentSubject">Disciplina</label><select id="assessmentSubject"></select></div>
+  </div>
+  <div class="field"><label for="assessmentNotes">Observações</label><textarea id="assessmentNotes" placeholder="Conteúdo, orientações, local ou detalhes..."></textarea></div>
+  <div class="row"><button id="addAssessment">＋ Salvar data</button><button class="secondary" id="clearAssessment">Limpar</button></div>
+  <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+  <h3>Minha agenda de avaliações</h3><div id="assessmentList"></div>
+ </section>
+</div>
 </main></div>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
@@ -177,9 +200,9 @@ $("convert").onclick=async()=>{
   });
   const payload=await resp.json();
   if(!resp.ok) throw new Error(payload?.error?.message||"A API não aceitou a solicitação.");
-  const recognized=(payload.candidates||[]).flatMap(c=>c.content?.parts||[]).map(p=>p.text||"").join("\\n").trim();
+  const recognized=(payload.candidates||[]).flatMap(c=>c.content?.parts||[]).map(p=>p.text||"").join("\n").trim();
   if(!recognized) throw new Error("A IA não encontrou texto legível na imagem.");
-  $("typed").value+=($("typed").value?"\\n":"")+recognized;
+  $("typed").value+=($("typed").value?"\n":"")+recognized;
   $("status").textContent="Transcrição concluída pela IA. Confere nomes e palavras antes de salvar.";
  }catch(e){
   $("status").textContent="Não foi possível converter: "+(e.message||"verifica a internet e a chave").slice(0,220);
@@ -224,17 +247,18 @@ $("googleClientId").value=localStorage.getItem("cadernoSocialGoogleClientId")||"
 document.querySelectorAll(".navbtn").forEach(b=>b.onclick=()=>{document.querySelectorAll(".navbtn").forEach(x=>x.classList.remove("active"));b.classList.add("active");["notes","library","study","backup","calendar","assessments"].forEach(v=>$("view-"+v).classList.toggle("hidden",v!==b.dataset.view));if(b.dataset.view==="calendar")renderCalendar();if(b.dataset.view==="assessments")renderAssessments()});
 window.addEventListener("resize",()=>{let old=canvas.toDataURL();fit();let im=new Image();im.onload=()=>ctx.drawImage(im,0,0,canvas.clientWidth,canvas.clientHeight);im.src=old});
 
-let calendarMonth=0, editingAssessment=null;
+let calendarMonth=new Date().getMonth(), calendarYear=new Date().getFullYear(), editingAssessment=null;
 const monthNames=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 function renderCalendar(){
  const grid=$("calendarGrid");if(!grid)return;
- $("monthLabel").textContent=monthNames[calendarMonth]+" de 2027";
+ $("monthLabel").textContent=monthNames[calendarMonth]+" de "+calendarYear;
+ $("calendarYearLabel").textContent="Ano "+calendarYear;
  grid.innerHTML="";
  ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"].forEach(d=>{let el=document.createElement("div");el.className="calendar-day head";el.textContent=d;grid.append(el)});
- const first=new Date(2027,calendarMonth,1), offset=(first.getDay()+6)%7, total=new Date(2027,calendarMonth+1,0).getDate();
+ const first=new Date(calendarYear,calendarMonth,1), offset=(first.getDay()+6)%7, total=new Date(calendarYear,calendarMonth+1,0).getDate();
  for(let i=0;i<offset;i++){let el=document.createElement("div");el.className="calendar-day blank";grid.append(el)}
  for(let day=1;day<=total;day++){
-  let date="2027-"+String(calendarMonth+1).padStart(2,"0")+"-"+String(day).padStart(2,"0");
+  let date=String(calendarYear)+"-"+String(calendarMonth+1).padStart(2,"0")+"-"+String(day).padStart(2,"0");
   let entries=data.assessments.filter(a=>a.date===date);
   let el=document.createElement("button");el.type="button";el.className="calendar-day"+(entries.length?" marked":"");
   el.innerHTML="<strong>"+day+"</strong>"+(entries.length?`<small>${entries.length} compromisso(s)</small>`:"");
@@ -270,12 +294,12 @@ function renderAssessments(){
   actions.append(edit,del);item.append(info,actions);list.append(item);
  });
 }
-$("prevMonth").onclick=()=>{calendarMonth=(calendarMonth+11)%12;renderCalendar()};
-$("nextMonth").onclick=()=>{calendarMonth=(calendarMonth+1)%12;renderCalendar()};
+$("prevMonth").onclick=()=>{calendarMonth--;if(calendarMonth<0){calendarMonth=11;calendarYear--}renderCalendar()};
+$("nextMonth").onclick=()=>{calendarMonth++;if(calendarMonth>11){calendarMonth=0;calendarYear++}renderCalendar()};
 $("addAssessment").onclick=()=>{
  const title=$("assessmentTitle").value.trim(),date=$("assessmentDate").value;
  if(!title||!date){alert("Preenche o nome da atividade e a data.");return}
- if(!date.startsWith("2027-")){alert("Escolhe uma data de 2027.");return}
+ 
  const record={id:editingAssessment||crypto.randomUUID(),title,type:$("assessmentType").value,date,subject:$("assessmentSubject").value||data.activeSubject,notes:$("assessmentNotes").value.trim()};
  if(editingAssessment){const i=data.assessments.findIndex(x=>x.id===editingAssessment);if(i>=0)data.assessments[i]=record}
  else data.assessments.push(record);
