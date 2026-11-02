@@ -1,0 +1,50 @@
+name: Gerar APK Android
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["**"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar projeto
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Extrair projeto
+        run: |
+          ZIP_FILE=$(find . -maxdepth 1 -name '*.zip' | head -n 1)
+          test -n "$ZIP_FILE"
+          mkdir projeto
+          unzip "$ZIP_FILE" -d projeto
+
+      - name: Preparar Android
+        working-directory: projeto/meu_caderno_social_flutter
+        run: flutter create --platforms=android --project-name meu_caderno_social .
+
+      - name: Instalar dependências
+        working-directory: projeto/meu_caderno_social_flutter
+        run: flutter pub get
+
+      - name: Gerar APK
+        working-directory: projeto/meu_caderno_social_flutter
+        run: flutter build apk --release
+
+      - name: Disponibilizar aplicativo
+        uses: actions/upload-artifact@v4
+        with:
+          name: Meu-Caderno-Social
+          path: projeto/meu_caderno_social_flutter/build/app/outputs/flutter-apk/app-release.apk
