@@ -39,6 +39,11 @@ jobs:
           flutter create --platforms=android --project-name meu_caderno_social .
           sed -i 's/flutter_local_notifications: \^17\.3\.0/flutter_local_notifications: ^18.0.1/' pubspec.yaml
 
+      - name: Corrigir tema dos cartões
+        working-directory: projeto/meu_caderno_social_flutter
+        run: |
+          sed -i 's/cardTheme: CardTheme(/cardTheme: CardThemeData(/g' lib/main.dart
+          grep -n "cardTheme:" lib/main.dart
       - name: Instalar dependencias
         working-directory: projeto/meu_caderno_social_flutter
         run: flutter pub get
