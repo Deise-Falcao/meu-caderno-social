@@ -25,7 +25,7 @@ jobs:
 
       - name: Localizar e extrair o projeto
         run: |
-          ZIP_FILE=$(find . -maxdepth 1 -type f -name '* (4).zip' | head -n 1)
+          ZIP_FILE=$(find . -maxdepth 1 -type f -name '*corrigido*.zip' | head -n 1)
           if [ -z "$ZIP_FILE" ]; then
             echo "Arquivo ZIP corrigido nao encontrado."
             exit 1
