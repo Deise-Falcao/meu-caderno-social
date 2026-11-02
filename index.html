@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#c7b1df"><meta name="description" content="Caderno digital de estudos de Deise Falcão Amaral — Serviço Social"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><title>Meu Caderno de Estudos — Deise Falcão Amaral</title>
+<style>
+:root{--ink:#342944;--muted:#766b82;--lav:#8064a8;--lav2:#eee7f7;--line:#e8dff1;--bg:#f8f5fb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:linear-gradient(120deg,#79609e,#aa91c7);color:#fff;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px}header h1{font-size:20px;margin:0}header small{opacity:.9}
+.wrap{max-width:1300px;margin:auto;padding:15px;display:grid;grid-template-columns:245px 1fr;gap:15px}
+aside,.panel{background:white;border:1px solid var(--line);border-radius:17px;padding:15px;box-shadow:0 5px 18px #4b32600a}
+h2{font-size:16px;margin:0 0 12px}h3{font-size:15px;margin:0 0 9px}.subject,.navbtn{width:100%;text-align:left;border:0;background:transparent;padding:10px;border-radius:10px;color:var(--ink);cursor:pointer;margin:2px 0}.subject.active,.navbtn.active,.subject:hover,.navbtn:hover{background:var(--lav2);color:#5f477e}
+button,.btn{border:0;border-radius:10px;background:var(--lav);color:#fff;padding:10px 13px;font-weight:600;cursor:pointer}.secondary{background:var(--lav2);color:#5b4674}.danger{background:#f9e8ed;color:#943d58}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}.muted{color:var(--muted);font-size:13px}
+input,textarea,select{font:inherit;border:1px solid var(--line);border-radius:10px;padding:10px;background:white;color:var(--ink)}input[type=text]{width:100%}
+.main{min-width:0}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.tab{background:#fff;color:#604c78;border:1px solid var(--line)}.tab.active{background:var(--lav);color:#fff}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.canvasbox{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;touch-action:none;position:relative}
+canvas{display:block;width:100%;height:370px;touch-action:none;background:repeating-linear-gradient(to bottom,#fff 0,#fff 31px,#eee8f4 32px,#fff 33px)}
+.paperlabel{position:absolute;top:10px;left:12px;color:#b5a9c2;font-size:11px;pointer-events:none}
+.typed{min-height:130px;width:100%;resize:vertical;line-height:1.65;background:linear-gradient(#fff 31px,#eee8f4 32px);background-size:100% 32px;border-radius:0 0 12px 12px}
+.status{font-size:12px;color:var(--muted);min-height:18px}.noteitem,.resource,.mindnode{padding:10px;border:1px solid var(--line);border-radius:10px;margin:7px 0}
+.noteitem{cursor:pointer}.noteitem.active{border-color:var(--lav);background:#faf7fd}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px;margin:9px 0}.field textarea{width:100%;min-height:110px}.resource iframe{width:100%;height:480px;border:1px solid var(--line);border-radius:10px}
+.nodearea{min-height:210px;background:#fcfaff;border:1px dashed #cbb9df;border-radius:14px;padding:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.node{background:#eee7f7;border:1px solid #d7c7e8;border-radius:13px;padding:12px;min-width:130px;max-width:230px;white-space:pre-wrap}
+.small{font-size:12px}.hidden{display:none!important}.pill{display:inline-block;background:#f2edf8;color:#654d81;padding:4px 8px;border-radius:30px;font-size:12px}
+@media(max-width:760px){.wrap{grid-template-columns:1fr;padding:9px}aside{order:2}.main{order:1}.grid2{grid-template-columns:1fr}canvas{height:330px}header{padding:13px}}
+
+.cover-screen{min-height:100svh;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 15% 15%,#f4eafa 0,transparent 34%),radial-gradient(circle at 85% 85%,#d7c3e9 0,transparent 34%),linear-gradient(135deg,#f8f3fc,#e9dcf3 55%,#d7c3e9)}
+.cover-card{width:min(100%,760px);min-height: min(850px, calc(100svh - 44px));position:relative;overflow:hidden;border-radius:30px;background:linear-gradient(145deg,#fbf8fd,#eee4f6 55%,#dfd0ed);color:#49375f;padding:clamp(28px,7vw,64px);display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 24px 70px #4c35642b}
+.cover-card:before,.cover-card:after{content:"";position:absolute;border:1px solid #ffffff35;border-radius:50%;pointer-events:none}
+.cover-card:before{width:420px;height:420px;right:-170px;top:-180px}
+.cover-card:after{width:320px;height:320px;left:-170px;bottom:-140px}
+.cover-topline{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#765d91}
+.cover-emblem{width:150px;height:150px;border:1px solid #b99ccc;background:#ffffff85;border-radius:38px;display:grid;place-items:center;backdrop-filter:blur(5px);margin:30px 0}
+.cover-title{font-family:Georgia,serif;font-size:clamp(38px,8vw,68px);font-weight:500;line-height:1.02;letter-spacing:-.04em;margin:0;max-width:540px}
+.cover-subtitle{font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:#765d91;margin-top:20px}
+.cover-name{font-size:clamp(21px,4vw,30px);font-weight:650;margin:0 0 8px}
+.cover-caption{font-size:14px;color:#765d91}
+.cover-enter{margin-top:26px;background:#fff;color:#624b7f;border-radius:999px;padding:15px 25px;font-size:15px;width:fit-content;box-shadow:0 8px 24px #35224830}
+.cover-enter:hover{transform:translateY(-1px)}
+#appHeader,#appWrap{display:none}
+.cover-back{background:#ffffff25;color:#fff;border:1px solid #ffffff45;padding:7px 10px}
+@media(max-width:600px){.cover-card{min-height:calc(100svh - 28px);border-radius:24px;padding:28px}.cover-emblem{width:126px;height:126px;margin:22px 0}}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:18px}.calendar-day{min-height:76px;border:1px solid var(--line);border-radius:10px;padding:7px;background:#fff;text-align:left;color:var(--ink)}.calendar-day.head{min-height:auto;background:var(--lav2);font-weight:700;text-align:center}.calendar-day.blank{border:0;background:transparent}.calendar-day.marked{border:2px solid #8b5bb5;background:#f4eafa}.calendar-day small{display:block;font-size:10px;color:#765b91;margin-top:5px}.assessment-item{border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0;display:flex;gap:10px;justify-content:space-between;align-items:flex-start}.assessment-item strong{display:block}.assessment-item button{flex-shrink:0}@media(max-width:560px){.calendar-grid{gap:3px}.calendar-day{min-height:58px;padding:4px;font-size:12px}.calendar-day small{font-size:9px}.assessment-item{flex-direction:column}}\n</style></head>
+<body>
+
+<section class="cover-screen" id="coverScreen">
+ <div class="cover-card">
+  <div>
+   <div class="cover-topline">Caderno acadêmico • 2027</div>
+   <div class="cover-emblem" aria-label="Ilustração estilizada de balança e chama">
+    <svg width="112" height="112" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+     <path d="M60 12C48 27 52 34 60 42C68 33 72 25 60 12Z" fill="#b78acb"/>
+     <path d="M60 29C47 43 50 51 60 56C70 50 73 42 60 29Z" fill="#d5b76b"/>
+     <path d="M60 43V98M42 98H78M50 107H70" stroke="#765d91" stroke-width="4" stroke-linecap="round"/>
+     <path d="M23 47H97M60 47V38" stroke="#9476b2" stroke-width="3.5" stroke-linecap="round"/>
+     <path d="M25 48L13 76H37L25 48Z" stroke="#9476b2" stroke-width="3.5" stroke-linejoin="round"/>
+     <path d="M95 48L83 76H107L95 48Z" stroke="#d5b76b" stroke-width="3.5" stroke-linejoin="round"/>
+     <path d="M13 76C15 87 35 87 37 76" stroke="#9476b2" stroke-width="3.5" stroke-linecap="round"/>
+     <path d="M83 76C85 87 105 87 107 76" stroke="#d5b76b" stroke-width="3.5" stroke-linecap="round"/>
+     <circle cx="60" cy="47" r="5" fill="#b78acb"/>
+    </svg>
+   </div>
+   <h1 class="cover-title">Meu<br> Caderno<br> de Estudos</h1>
+   <div class="cover-subtitle">Serviço Social • Conhecimento • Formação</div>
+  </div>
+  <div>
+   <p class="cover-name">Deise Falcão Amaral</p>
+   <div class="cover-caption">Caderno acadêmico • Serviço Social</div>
+   <button type="button" class="cover-enter" id="enterNotebook" onclick="document.getElementById('coverScreen').style.display='none';document.getElementById('appHeader').style.display='flex';document.getElementById('appWrap').style.display='grid';window.scrollTo(0,0)">Entrar no meu caderno&nbsp; →</button>
+  </div>
+ </div>
+</section>
+
+<header id="appHeader"><div><h1>📚 Meu Caderno de Estudos</h1><small>Teu espaço de estudos em Serviço Social</small></div><div class="row"><button class="cover-back" id="backToCover" type="button" onclick="document.getElementById('coverScreen').style.display='grid';document.getElementById('appHeader').style.display='none';document.getElementById('appWrap').style.display='none';window.scrollTo(0,0)">← Capa</button><span class="pill" style="background:#ffffff25;color:white">Lilás acadêmico • edição 2027</span></div></header>
+<div class="wrap" id="appWrap">
+<aside>
+<h2>Meu espaço acadêmico</h2>
+<button class="navbtn active" data-view="notes">✍️ Caderno</button>
+<button class="navbtn" data-view="library">📚 Biblioteca de materiais</button>
+<button class="navbtn" data-view="study">🧠 Resumos e mapas mentais</button>
+<button class="navbtn" data-view="backup">☁️ Backup e sincronização</button>
+<button class="navbtn" data-view="calendar">🗓️ Calendário 2027</button>
+<button class="navbtn" data-view="assessments">📝 Provas e trabalhos</button>
+<hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
+<h2>Disciplinas</h2><div id="subjects"></div>
+<div class="row" style="margin-top:8px"><input id="newSubject" placeholder="Nova disciplina" aria-label="Nova disciplina"><button id="addSubject">+</button></div>
+<div class="muted" style="margin-top:12px">Anotações e materiais ficam neste navegador até exportares um backup.</div>
+</aside>
+<main class="main">
+<div id="view-notes">
+<div class="tabs"><button class="tab active">Caderno digital</button></div>
+<section class="panel">
+<div class="row between"><div style="flex:1;min-width:170px"><div class="muted" id="crumb">Disciplina</div><input id="noteTitle" type="text" placeholder="Título da anotação"></div><div class="row"><button class="secondary" id="save">Salvar</button><button class="danger" id="delete">Excluir</button></div></div>
+<div id="notes"></div>
+<div class="toolbar"><label class="muted">Fonte do texto <select id="fontFamily"><option value="Arial, sans-serif">Arial</option><option value="Georgia, serif">Georgia</option><option value="Verdana, sans-serif">Verdana</option><option value="Trebuchet MS, sans-serif">Trebuchet</option><option value="Courier New, monospace">Courier New</option></select></label><label class="btn secondary">＋ Inserir imagem<input id="noteImage" type="file" accept="image/*" hidden></label><button id="pen">✍️ Caneta</button><button class="secondary" id="eraser">⌫ Borracha</button><label class="muted">Cor <input id="color" type="color" value="#49365e" style="width:38px;padding:2px"></label><label class="muted">Traço <input id="size" type="range" min="1" max="12" value="3"></label><button class="secondary" id="undo">Desfazer</button><button class="secondary" id="clear">Limpar folha</button></div>
+<div class="canvasbox"><span class="paperlabel">ESCREVE AQUI COM O DEDO OU CANETA DIGITAL</span><canvas id="ink"></canvas></div>
+<div class="toolbar"><button id="convert">Converter manuscrito em texto</button><button class="secondary" id="exportNote">Imprimir / PDF</button></div>
+<div class="field" style="margin-top:8px">
+  <label for="geminiKey" style="font-weight:600">Conversão inteligente de escrita manual</label>
+  <div class="row">
+    <input id="geminiKey" type="password" autocomplete="off" placeholder="Cola aqui tua chave da IA" style="flex:1;min-width:220px">
+    <button type="button" class="secondary" id="showKey">Mostrar</button>
+  </div>
+  <div class="muted">A chave fica somente nesta sessão do navegador. Para obter uma chave, usa o Google AI Studio. Não compartilhes tua chave com ninguém.</div>
+  <div class="muted"><a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Abrir Google AI Studio para criar uma chave</a></div>
+</div>
+<div class="status" id="status">A conversão por IA requer internet e uma chave do Google AI Studio. Revê sempre o resultado.</div>
+<textarea class="typed" id="typed" placeholder="Texto digitado ou convertido..."></textarea>
+</section></div>
+<div id="view-library" class="hidden">
+<section class="panel"><div class="row between"><div><h2>Biblioteca de materiais</h2><div class="muted">Guarda PDFs e documentos por disciplina.</div></div><label class="btn">＋ Adicionar arquivo<input id="fileInput" type="file" accept=".pdf,.txt,.md,.doc,.docx,image/*" multiple hidden></label></div>
+<div class="field"><label>Filtrar por disciplina</label><select id="libFilter"></select></div><div id="resources"></div><div id="preview" class="resource hidden"></div>
+<p class="muted">Os arquivos são guardados neste navegador. PDFs podem ser visualizados aqui; outros formatos podem ser baixados ou abertos no dispositivo.</p></section>
+</div>
+<div id="view-study" class="hidden">
+<section class="panel"><h2>Resumos de estudo</h2><div class="muted">Regista conceitos-chave, definições, autores e perguntas para revisar.</div>
+<div class="field"><label>Disciplina</label><select id="studySubject"></select></div>
+<div class="field"><label>Título do resumo</label><input id="summaryTitle" placeholder="Ex.: Questão social e Serviço Social"></div>
+<div class="grid2"><div class="field"><label>Resumo / explicação</label><textarea id="summaryBody" placeholder="Escreve com tuas palavras..."></textarea></div><div class="field"><label>Conceitos-chave, autores e referências</label><textarea id="summaryRefs" placeholder="Conceitos, autores, obras, páginas..."></textarea></div></div>
+<div class="field"><label>Perguntas para revisão</label><textarea id="summaryQuestions" placeholder="1. O que é...?&#10;2. Qual a contribuição de...?"></textarea></div>
+<div class="row"><button id="saveSummary">Salvar resumo</button><button class="secondary" id="clearSummary">Novo resumo</button></div><div id="summaries"></div>
+<hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+<h2>Construtor de mapa mental</h2><div class="muted">Adiciona ideias e organiza visualmente os conceitos. Podes editar ou excluir cada cartão.</div>
+<div class="field"><label>Tema central</label><input id="mapTitle" placeholder="Ex.: Política de Assistência Social"></div>
+<div class="row"><input id="nodeText" placeholder="Nova ideia ou conceito"><button id="addNode">Adicionar ideia</button></div>
+<div id="mindmap" class="nodearea" style="margin-top:12px"></div>
+<div class="toolbar"><button class="secondary" id="saveMap">Salvar mapa mental</button><button class="secondary" id="printMap">Imprimir mapa</button></div><div id="savedMaps"></div>
+</section></div>
+<div id="view-backup" class="hidden">
+<section class="panel"><h2>Backup e sincronização</h2><p>Para não perder teus estudos, podes exportar um arquivo de backup com anotações, resumos, mapas, provas, trabalhos, calendário e lista de materiais. Guarda-o em local seguro e importa-o em outro dispositivo.</p>
+<div class="row"><button id="backup">⬇ Exportar backup</button><label class="btn secondary">⬆ Importar backup<input id="restore" type="file" accept=".json,application/json" hidden></label></div>
+<div class="resource" style="margin-top:15px"><h3>Sincronização com Google Drive</h3><span class="pill" id="driveState">Não conectado</span>
+<p class="muted">O aplicativo guardará um backup na área privada de dados do Meu Caderno Social no Google Drive. O app não terá acesso aos teus outros arquivos.</p>
+<div class="field"><label for="googleClientId">Identificador OAuth do Google (Client ID)</label><input id="googleClientId" type="text" placeholder="000000000000-abc.apps.googleusercontent.com"></div>
+<div class="row"><button id="connectGoogle">Conectar Google</button><button class="secondary" id="syncGoogle" disabled>Enviar ao Drive</button><button class="secondary" id="restoreGoogle" disabled>Restaurar do Drive</button><button class="secondary" id="disconnectGoogle">Desconectar</button></div>
+<div class="status" id="driveStatus">Cria um OAuth Client ID do tipo Aplicativo da Web no Google Cloud Console. O caderno precisa estar publicado num endereço HTTPS autorizado.</div></div>
+</section></div>
+</main></div>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<script>
+const defaults=["Fundamentos Históricos, Teóricos e Metodológicos","Política Social","Psicologia do Desenvolvimento","Princípios de Economia","Perspectivas Profissionais","Sociologia","Filosofia","Ética Profissional"];
+const KEY="cadernoSocialV2";
+let data=JSON.parse(localStorage.getItem(KEY)||"null")||{subjects:defaults,notes:[],resources:[],summaries:[],maps:[],assessments:[],activeSubject:defaults[0]};
+data.assessments=data.assessments||[];
+const $=id=>document.getElementById(id), saveData=()=>localStorage.setItem(KEY,JSON.stringify(data));
+let canvas=$("ink"),ctx=canvas.getContext("2d"),drawing=false,tool="pen",history=[],current=null,activeSummary=null,activeMapNodes=[],autoSaveTimer=null;
+function renderSubjects(){ $("subjects").innerHTML="";data.subjects.forEach(s=>{let b=document.createElement("button");b.className="subject"+(s===data.activeSubject?" active":"");b.textContent="📖 "+s;b.onclick=()=>{data.activeSubject=s;current=null;blank();renderAll();saveData()};$("subjects").append(b)});["libFilter","studySubject"].forEach(id=>{let el=$(id),v=el.value;el.innerHTML='<option value="">Todas / selecionar</option>'+data.subjects.map(s=>`<option>${esc(s)}</option>`).join("");if(data.subjects.includes(v))el.value=v});$("crumb").textContent=data.activeSubject}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderNotes(){ $("notes").innerHTML="";data.notes.filter(n=>n.subject===data.activeSubject).forEach(n=>{let d=document.createElement("button");d.className="noteitem"+(current&&n.id===current.id?" active":"");d.textContent="📝 "+(n.title||"Anotação");d.onclick=()=>loadNote(n.id);$("notes").append(d)})}
+function renderAll(){renderSubjects();renderNotes();renderResources();renderSummaries();renderMaps()}
+function fit(){let r=canvas.getBoundingClientRect(),dpr=Math.max(1,devicePixelRatio||1);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.lineCap="round";ctx.lineJoin="round"}
+function blank(){current=null;$("noteTitle").value="";$("typed").value="";ctx.clearRect(0,0,canvas.width,canvas.height);history=[];history.push(canvas.toDataURL());renderNotes()}
+function loadNote(id){let n=data.notes.find(x=>x.id===id);if(!n)return;current=n;$("noteTitle").value=n.title;$("typed").value=n.text||"";$("fontFamily").value=n.fontFamily||"Arial, sans-serif";$("typed").style.fontFamily=$("fontFamily").value;let im=new Image();im.onload=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(im,0,0,canvas.clientWidth,canvas.clientHeight);history=[canvas.toDataURL()]};im.src=n.image;renderNotes()}
+function saveNote(){let n=current||{id:crypto.randomUUID(),subject:data.activeSubject};n.title=$("noteTitle").value.trim()||"Anotação sem título";n.text=$("typed").value;n.image=canvas.toDataURL();n.fontFamily=$("fontFamily").value;n.updated=new Date().toISOString();if(!current)data.notes.unshift(n);current=n;saveData();renderNotes();$("status").textContent="Anotação salva neste dispositivo."}
+function pointer(e){let r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+canvas.addEventListener("pointerdown",e=>{drawing=true;canvas.setPointerCapture(e.pointerId);history.push(canvas.toDataURL());let p=pointer(e);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.strokeStyle=tool==="eraser"?"#ffffff":$("color").value;ctx.lineWidth=tool==="eraser"?+$("size").value*5:+$("size").value;ctx.lineTo(p.x+.1,p.y+.1);ctx.stroke()});
+canvas.addEventListener("pointermove",e=>{if(drawing){let p=pointer(e);ctx.lineTo(p.x,p.y);ctx.stroke()}});["pointerup","pointercancel","lostpointercapture"].forEach(ev=>canvas.addEventListener(ev,()=>drawing=false));
+$("pen").onclick=()=>tool="pen";$("eraser").onclick=()=>tool="eraser";$("undo").onclick=()=>{if(history.length>1){history.pop();let im=new Image();im.onload=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(im,0,0,canvas.clientWidth,canvas.clientHeight)};im.src=history.at(-1)}};
+$("clear").onclick=()=>{if(confirm("Limpar a folha?")){history.push(canvas.toDataURL());ctx.clearRect(0,0,canvas.width,canvas.height)}};$("save").onclick=saveNote;$("delete").onclick=()=>{if(current&&confirm("Excluir anotação?")){data.notes=data.notes.filter(n=>n.id!==current.id);blank();saveData()}};
+$("addSubject").onclick=()=>{let s=$("newSubject").value.trim();if(s&&!data.subjects.includes(s)){data.subjects.push(s);data.activeSubject=s;$("newSubject").value="";blank();saveData();renderAll()}};
+$("showKey").onclick=()=>{let k=$("geminiKey");k.type=k.type==="password"?"text":"password";$("showKey").textContent=k.type==="password"?"Mostrar":"Ocultar"};
+$("convert").onclick=async()=>{
+ const key=$("geminiKey").value.trim();
+ if(!key){$("status").textContent="Primeiro, cola tua chave do Google AI Studio no campo acima.";return}
+ const png=canvas.toDataURL("image/png").split(",")[1];
+ $("convert").disabled=true;$("status").textContent="A IA está lendo tua escrita. Aguarda um instante...";
+ try{
+  const resp=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",{
+   method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},
+   body:JSON.stringify({contents:[{parts:[
+    {text:"Transcreva fielmente todo o texto manuscrito visível nesta imagem, em português do Brasil. Preserve nomes próprios, acentos, pontuação e quebras de linha quando possível. Não traduza, não resuma e não invente palavras. Se algum trecho estiver ilegível, marque [ilegível]. Responda somente com a transcrição."},
+    {inlineData:{mimeType:"image/png",data:png}}
+   ]}],generationConfig:{temperature:0}})
+  });
+  const payload=await resp.json();
+  if(!resp.ok) throw new Error(payload?.error?.message||"A API não aceitou a solicitação.");
+  const recognized=(payload.candidates||[]).flatMap(c=>c.content?.parts||[]).map(p=>p.text||"").join("\\n").trim();
+  if(!recognized) throw new Error("A IA não encontrou texto legível na imagem.");
+  $("typed").value+=($("typed").value?"\\n":"")+recognized;
+  $("status").textContent="Transcrição concluída pela IA. Confere nomes e palavras antes de salvar.";
+ }catch(e){
+  $("status").textContent="Não foi possível converter: "+(e.message||"verifica a internet e a chave").slice(0,220);
+ }finally{$("convert").disabled=false}
+};
+$("fontFamily").onchange=()=>{$("typed").style.fontFamily=$("fontFamily").value;if(current)saveNote()};
+$("noteImage").onchange=e=>{const f=e.target.files?.[0];if(!f)return;const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const maxW=canvas.clientWidth,maxH=canvas.clientHeight,scale=Math.min(maxW/img.width,maxH/img.height,1),w=img.width*scale,h=img.height*scale;ctx.drawImage(img,8,8,w,h);history.push(canvas.toDataURL());saveNote();$("status").textContent="Imagem inserida na página e salva."};img.src=reader.result};reader.readAsDataURL(f);e.target.value=""};
+["noteTitle","typed"].forEach(id=>$(id).addEventListener("input",()=>{clearTimeout(autoSaveTimer);autoSaveTimer=setTimeout(()=>saveNote(),900)}));
+$("exportNote").onclick=()=>{let w=window.open("","_blank");if(!w)return;w.document.write(`<h1>${esc($("noteTitle").value)}</h1><h3>${esc(data.activeSubject)}</h3><img style="width:100%" src="${canvas.toDataURL()}"><pre style="white-space:pre-wrap">${esc($("typed").value)}</pre>`);w.document.close();w.print()};
+function renderResources(){let f=$("libFilter").value;$("resources").innerHTML="";let arr=data.resources.filter(r=>!f||r.subject===f);if(!arr.length)$("resources").innerHTML='<p class="muted">Nenhum material adicionado ainda.</p>';arr.forEach(r=>{let d=document.createElement("div");d.className="resource";d.innerHTML=`<div class="row between"><div><b>${esc(r.name)}</b><div class="muted">${esc(r.subject)} • ${Math.round(r.size/1024)} KB</div></div><div class="row"><button class="secondary" data-open="${r.id}">Abrir</button><button class="danger" data-del="${r.id}">Excluir</button></div></div>`;$("resources").append(d)});$("resources").querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openResource(b.dataset.open));$("resources").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(confirm("Excluir este material?")){data.resources=data.resources.filter(x=>x.id!==b.dataset.del);saveData();renderResources()}})}
+$("libFilter").onchange=renderResources;
+$("fileInput").onchange=async e=>{for(let f of e.target.files){if(f.size>8*1024*1024){alert(f.name+" excede 8 MB. Para evitar sobrecarregar o navegador, adiciona arquivos menores.");continue}let dataUrl=await new Promise((res,rej)=>{let r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});data.resources.push({id:crypto.randomUUID(),name:f.name,type:f.type,size:f.size,subject:data.activeSubject,data:dataUrl});}saveData();renderResources();e.target.value=""};
+function openResource(id){let r=data.resources.find(x=>x.id===id),p=$("preview");p.classList.remove("hidden");p.innerHTML=`<div class="row between"><b>${esc(r.name)}</b><button class="secondary" id="closePreview">Fechar</button></div>`;if(r.type==="application/pdf")p.innerHTML+=`<iframe title="Pré-visualização do PDF" src="${r.data}"></iframe>`;else p.innerHTML+=`<p class="muted">Este formato não tem pré-visualização integrada. Usa a opção de baixar/abrir o arquivo.</p><a download="${esc(r.name)}" href="${r.data}">Baixar / abrir material</a>`;$("closePreview").onclick=()=>p.classList.add("hidden")}
+function renderSummaries(){let el=$("summaries");el.innerHTML="<h3>Resumos guardados</h3>";data.summaries.forEach(s=>{let d=document.createElement("div");d.className="resource";d.innerHTML=`<b>${esc(s.title)}</b><div class="muted">${esc(s.subject)}</div><p>${esc(s.body.slice(0,180))}</p><button class="secondary" data-edit="${s.id}">Editar</button> <button class="danger" data-remove="${s.id}">Excluir</button>`;el.append(d)});el.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>{let s=data.summaries.find(x=>x.id===b.dataset.edit);activeSummary=s.id;$("studySubject").value=s.subject;$("summaryTitle").value=s.title;$("summaryBody").value=s.body;$("summaryRefs").value=s.refs;$("summaryQuestions").value=s.questions});el.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{data.summaries=data.summaries.filter(x=>x.id!==b.dataset.remove);saveData();renderSummaries()})}
+$("saveSummary").onclick=()=>{let s=activeSummary?data.summaries.find(x=>x.id===activeSummary):{id:crypto.randomUUID()};Object.assign(s,{subject:$("studySubject").value||data.activeSubject,title:$("summaryTitle").value||"Resumo sem título",body:$("summaryBody").value,refs:$("summaryRefs").value,questions:$("summaryQuestions").value});if(!activeSummary)data.summaries.unshift(s);activeSummary=s.id;saveData();renderSummaries()};$("clearSummary").onclick=()=>{activeSummary=null;["summaryTitle","summaryBody","summaryRefs","summaryQuestions"].forEach(id=>$(id).value="")};
+function renderMapNodes(){let el=$("mindmap");el.innerHTML="";activeMapNodes.forEach((n,i)=>{let d=document.createElement("div");d.className="node";d.innerHTML=`<b>${esc(n)}</b><div class="row" style="margin-top:9px"><button class="secondary small" data-up="${i}">↑</button><button class="secondary small" data-down="${i}">↓</button><button class="danger small" data-x="${i}">×</button></div>`;el.append(d)});el.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{activeMapNodes.splice(+b.dataset.x,1);renderMapNodes()});el.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>{let i=+b.dataset.up;if(i>0){[activeMapNodes[i-1],activeMapNodes[i]]=[activeMapNodes[i],activeMapNodes[i-1]];renderMapNodes()}});el.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>{let i=+b.dataset.down;if(i<activeMapNodes.length-1){[activeMapNodes[i+1],activeMapNodes[i]]=[activeMapNodes[i],activeMapNodes[i+1]];renderMapNodes()}})}
+$("addNode").onclick=()=>{let v=$("nodeText").value.trim();if(v){activeMapNodes.push(v);$("nodeText").value="";renderMapNodes()}};function renderMaps(){let el=$("savedMaps");el.innerHTML="<h3>Mapas salvos</h3>";data.maps.forEach(m=>{let d=document.createElement("div");d.className="resource";d.innerHTML=`<b>${esc(m.title)}</b> <button class="secondary" data-loadmap="${m.id}">Abrir</button> <button class="danger" data-delmap="${m.id}">Excluir</button>`;el.append(d)});el.querySelectorAll("[data-loadmap]").forEach(b=>b.onclick=()=>{let m=data.maps.find(x=>x.id===b.dataset.loadmap);$("mapTitle").value=m.title;activeMapNodes=[...m.nodes];renderMapNodes()});el.querySelectorAll("[data-delmap]").forEach(b=>b.onclick=()=>{data.maps=data.maps.filter(x=>x.id!==b.dataset.delmap);saveData();renderMaps()})}
+$("saveMap").onclick=()=>{let m={id:crypto.randomUUID(),title:$("mapTitle").value||"Mapa mental",nodes:[...activeMapNodes]};data.maps.unshift(m);saveData();renderMaps()};$("printMap").onclick=()=>{let w=window.open("","_blank");if(!w)return;w.document.write(`<h1>${esc($("mapTitle").value)}</h1><ul>${activeMapNodes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul>`);w.document.close();w.print()};
+$("backup").onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="meu-caderno-social-backup.json";a.click();URL.revokeObjectURL(a.href)};
+$("restore").onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d.subjects||!d.notes||!d.resources)throw Error();if(confirm("Importar backup e substituir os dados atuais deste caderno?")){data={...d,summaries:d.summaries||[],maps:d.maps||[]};saveData();renderAll();blank();alert("Backup importado.")}}catch(err){alert("Arquivo de backup inválido.")}};r.readAsText(f)};
+// Google Drive: guarda um backup privado na appDataFolder, sem acessar outros arquivos.
+let googleTokenClient=null, googleAccessToken=null;
+const DRIVE_FILE_NAME="Meu Caderno Social - backup.json";
+const driveMsg=t=>$("driveStatus").textContent=t;
+function driveReady(){return !!googleAccessToken}
+function setDriveState(connected){$("driveState").textContent=connected?"Conectado ao Google":"Não conectado";$("syncGoogle").disabled=!connected;$("restoreGoogle").disabled=!connected}
+function waitForGoogle(){return new Promise((resolve,reject)=>{let tries=0;const timer=setInterval(()=>{if(window.google?.accounts?.oauth2){clearInterval(timer);resolve()}else if(++tries>40){clearInterval(timer);reject(Error("A biblioteca de autenticação do Google não carregou."))}},250)})}
+$("connectGoogle").onclick=async()=>{
+ const clientId=$("googleClientId").value.trim();
+ if(!clientId){driveMsg("Insere primeiro o OAuth Client ID do teu projeto Google Cloud.");return}
+ localStorage.setItem("cadernoSocialGoogleClientId",clientId);
+ try{await waitForGoogle();googleTokenClient=google.accounts.oauth2.initTokenClient({client_id:clientId,scope:"https://www.googleapis.com/auth/drive.appdata",callback:(resp)=>{if(resp.error){driveMsg("O Google não autorizou a conexão: "+resp.error);return}googleAccessToken=resp.access_token;setDriveState(true);driveMsg("Google conectado. Agora podes enviar ou restaurar teu caderno.")}});googleTokenClient.requestAccessToken({prompt:"consent"})}
+ catch(e){driveMsg(e.message+" Confere o Client ID e publica o caderno em HTTPS.")}
+};
+async function driveApi(url,opts={}){let r=await fetch(url,{...opts,headers:{...(opts.headers||{}),Authorization:"Bearer "+googleAccessToken}});if(!r.ok){let t=await r.text();throw Error("Google Drive respondeu "+r.status+": "+t.slice(0,200))}return r.json()}
+async function findDriveBackup(){const q=encodeURIComponent("name='"+DRIVE_FILE_NAME+"' and 'appDataFolder' in parents and trashed=false");return driveApi("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q="+q+"&fields=files(id,name,modifiedTime)")}
+$("syncGoogle").onclick=async()=>{if(!driveReady())return;$("syncGoogle").disabled=true;driveMsg("Enviando backup ao Google Drive...");try{const found=await findDriveBackup();const payload=JSON.stringify({...data,cloudUpdatedAt:new Date().toISOString()});const boundary="cadernoSocialBoundary"+Date.now();const metadata={name:DRIVE_FILE_NAME,mimeType:"application/json",...(found.files?.[0]?{}:{parents:["appDataFolder"]})};const body="--"+boundary+"\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"+JSON.stringify(metadata)+"\r\n--"+boundary+"\r\nContent-Type: application/json\r\n\r\n"+payload+"\r\n--"+boundary+"--";const url=found.files?.[0]?"https://www.googleapis.com/upload/drive/v3/files/"+found.files[0].id+"?uploadType=multipart":"https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";await driveApi(url,{method:found.files?.[0]?"PATCH":"POST",headers:{"Content-Type":"multipart/related; boundary="+boundary},body});driveMsg("Backup enviado ao Google Drive em "+new Date().toLocaleString("pt-BR")+".")}catch(e){driveMsg("Falha ao enviar: "+e.message)}finally{$("syncGoogle").disabled=!driveReady()}};
+$("restoreGoogle").onclick=async()=>{if(!driveReady())return;if(!confirm("Restaurar o backup do Google Drive? Isso substituirá os dados deste navegador."))return;$("restoreGoogle").disabled=true;driveMsg("Procurando backup no Google Drive...");try{const found=await findDriveBackup();if(!found.files?.length){driveMsg("Nenhum backup encontrado. Primeiro envia o caderno do aparelho que contém teus estudos.");return}const remote=await driveApi("https://www.googleapis.com/drive/v3/files/"+found.files[0].id+"?alt=media");if(!remote.subjects||!remote.notes)throw Error("O arquivo não é um backup válido do Caderno Social.");data={...remote,summaries:remote.summaries||[],maps:remote.maps||[],resources:remote.resources||[]};saveData();renderAll();blank();driveMsg("Backup restaurado neste dispositivo.")}catch(e){driveMsg("Falha ao restaurar: "+e.message)}finally{$("restoreGoogle").disabled=!driveReady()}};
+$("disconnectGoogle").onclick=()=>{if(googleAccessToken&&window.google?.accounts?.oauth2)google.accounts.oauth2.revoke(googleAccessToken);googleAccessToken=null;googleTokenClient=null;setDriveState(false);driveMsg("Desconectado. Os dados locais e o backup na nuvem não foram apagados.")};
+$("googleClientId").value=localStorage.getItem("cadernoSocialGoogleClientId")||"";
+
+document.querySelectorAll(".navbtn").forEach(b=>b.onclick=()=>{document.querySelectorAll(".navbtn").forEach(x=>x.classList.remove("active"));b.classList.add("active");["notes","library","study","backup","calendar","assessments"].forEach(v=>$("view-"+v).classList.toggle("hidden",v!==b.dataset.view));if(b.dataset.view==="calendar")renderCalendar();if(b.dataset.view==="assessments")renderAssessments()});
+window.addEventListener("resize",()=>{let old=canvas.toDataURL();fit();let im=new Image();im.onload=()=>ctx.drawImage(im,0,0,canvas.clientWidth,canvas.clientHeight);im.src=old});
+
+let calendarMonth=0, editingAssessment=null;
+const monthNames=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+function renderCalendar(){
+ const grid=$("calendarGrid");if(!grid)return;
+ $("monthLabel").textContent=monthNames[calendarMonth]+" de 2027";
+ grid.innerHTML="";
+ ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"].forEach(d=>{let el=document.createElement("div");el.className="calendar-day head";el.textContent=d;grid.append(el)});
+ const first=new Date(2027,calendarMonth,1), offset=(first.getDay()+6)%7, total=new Date(2027,calendarMonth+1,0).getDate();
+ for(let i=0;i<offset;i++){let el=document.createElement("div");el.className="calendar-day blank";grid.append(el)}
+ for(let day=1;day<=total;day++){
+  let date="2027-"+String(calendarMonth+1).padStart(2,"0")+"-"+String(day).padStart(2,"0");
+  let entries=data.assessments.filter(a=>a.date===date);
+  let el=document.createElement("button");el.type="button";el.className="calendar-day"+(entries.length?" marked":"");
+  el.innerHTML="<strong>"+day+"</strong>"+(entries.length?`<small>${entries.length} compromisso(s)</small>`:"");
+  el.title=entries.map(a=>a.title).join(", ");
+  el.onclick=()=>{document.querySelector('[data-view="assessments"]').click();$("assessmentDate").value=date;renderAssessments()};
+  grid.append(el);
+ }
+}
+function fillAssessmentSubjects(){
+ const sel=$("assessmentSubject");if(!sel)return;
+ sel.innerHTML="";
+ data.subjects.forEach(s=>{let o=document.createElement("option");o.value=s;o.textContent=s;sel.append(o)});
+}
+function clearAssessmentForm(){
+ editingAssessment=null;$("assessmentTitle").value="";$("assessmentType").value="Prova";$("assessmentDate").value="";$("assessmentNotes").value="";
+ $("addAssessment").textContent="＋ Salvar data";
+}
+function renderAssessments(){
+ const list=$("assessmentList");if(!list)return;fillAssessmentSubjects();
+ list.innerHTML="";
+ const items=[...data.assessments].sort((a,b)=>a.date.localeCompare(b.date));
+ if(!items.length){list.innerHTML='<p class="muted">Ainda não há provas ou trabalhos cadastrados.</p>';return}
+ items.forEach(a=>{
+  const item=document.createElement("div");item.className="assessment-item";
+  const info=document.createElement("div");
+  const date=new Date(a.date+"T12:00:00").toLocaleDateString("pt-BR");
+  const strong=document.createElement("strong");strong.textContent=a.title;info.append(strong);
+  const meta=document.createElement("div");meta.className="muted";meta.textContent=`${date} • ${a.type} • ${a.subject}`;info.append(meta);
+  if(a.notes){const note=document.createElement("div");note.textContent=a.notes;note.style.marginTop="6px";info.append(note)}
+  const actions=document.createElement("div");actions.className="row";
+  const edit=document.createElement("button");edit.className="secondary";edit.textContent="Editar";edit.onclick=()=>{editingAssessment=a.id;$("assessmentTitle").value=a.title;$("assessmentType").value=a.type;$("assessmentDate").value=a.date;$("assessmentSubject").value=a.subject;$("assessmentNotes").value=a.notes||"";$("addAssessment").textContent="Salvar alterações";window.scrollTo(0,0)};
+  const del=document.createElement("button");del.className="danger";del.textContent="Excluir";del.onclick=()=>{if(confirm("Excluir esta data da agenda?")){data.assessments=data.assessments.filter(x=>x.id!==a.id);saveData();renderAssessments();renderCalendar()}};
+  actions.append(edit,del);item.append(info,actions);list.append(item);
+ });
+}
+$("prevMonth").onclick=()=>{calendarMonth=(calendarMonth+11)%12;renderCalendar()};
+$("nextMonth").onclick=()=>{calendarMonth=(calendarMonth+1)%12;renderCalendar()};
+$("addAssessment").onclick=()=>{
+ const title=$("assessmentTitle").value.trim(),date=$("assessmentDate").value;
+ if(!title||!date){alert("Preenche o nome da atividade e a data.");return}
+ if(!date.startsWith("2027-")){alert("Escolhe uma data de 2027.");return}
+ const record={id:editingAssessment||crypto.randomUUID(),title,type:$("assessmentType").value,date,subject:$("assessmentSubject").value||data.activeSubject,notes:$("assessmentNotes").value.trim()};
+ if(editingAssessment){const i=data.assessments.findIndex(x=>x.id===editingAssessment);if(i>=0)data.assessments[i]=record}
+ else data.assessments.push(record);
+ saveData();clearAssessmentForm();renderAssessments();renderCalendar();
+};
+$("clearAssessment").onclick=clearAssessmentForm;
+fit();renderAll();blank();
+function showNotebook(){document.getElementById("coverScreen").style.display="none";document.getElementById("appHeader").style.display="flex";document.getElementById("appWrap").style.display="grid";window.scrollTo(0,0)}
+function showCover(){document.getElementById("coverScreen").style.display="grid";document.getElementById("appHeader").style.display="none";document.getElementById("appWrap").style.display="none";window.scrollTo(0,0)}
+document.getElementById("enterNotebook").addEventListener("click",showNotebook);
+document.getElementById("backToCover").addEventListener("click",showCover);
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}
+</script></body></html>

@@ -1,0 +1,12 @@
+{
+  "name": "Meu Caderno de Estudos — Deise Falcão Amaral",
+  "short_name": "Meu Caderno",
+  "description": "Caderno digital acadêmico de Serviço Social",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8f3fc",
+  "theme_color": "#c7b1df",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
