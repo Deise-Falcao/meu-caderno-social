@@ -42,8 +42,20 @@ jobs:
       - name: Corrigir tema dos cartões
         working-directory: projeto/meu_caderno_social_flutter
         run: |
-          sed -i 's/CardTheme(/CardThemeData(/g' lib/main.dart
-          grep -n "cardTheme:" lib/main.dart
+          python3 - <<'PY'
+          from pathlib import Path
+
+          arquivo = Path("lib/main.dart")
+          codigo = arquivo.read_text(encoding="utf-8")
+          codigo = codigo.replace("CardTheme(", "CardThemeData(")
+          arquivo.write_text(codigo, encoding="utf-8")
+
+          print("Verificação da correção:")
+          for linha in codigo.splitlines():
+              if "cardTheme:" in linha:
+                  print(linha)
+          PY
+          
       - name: Instalar dependencias
         working-directory: projeto/meu_caderno_social_flutter
         run: flutter pub get
