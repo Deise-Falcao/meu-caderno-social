@@ -42,7 +42,7 @@ jobs:
       - name: Corrigir tema dos cartões
         working-directory: projeto/meu_caderno_social_flutter
         run: |
-          sed -i 's/cardTheme: CardTheme(/cardTheme: CardThemeData(/g' lib/main.dart
+          sed -i 's/CardTheme(/CardThemeData(/g' lib/main.dart
           grep -n "cardTheme:" lib/main.dart
       - name: Instalar dependencias
         working-directory: projeto/meu_caderno_social_flutter
