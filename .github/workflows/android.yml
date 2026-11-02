@@ -38,9 +38,7 @@ jobs:
 
       - name: Atualizar notificações
         working-directory: projeto/meu_caderno_social_flutter
-        run: |
-          sed -i 's/flutter_local_notifications: \^17\.3\.0/flutter_local_notifications: ^18.0.1/' pubspec.yaml
-          grep flutter_local_notifications pubspec.yaml
+        run: flutter pub add flutter_local_notifications:^18.0.1
 
       - name: Instalar dependências
         working-directory: projeto/meu_caderno_social_flutter
