@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: "17"
 
       - name: Configurar Flutter
         uses: subosito/flutter-action@v2
@@ -38,7 +38,9 @@ jobs:
 
       - name: Atualizar notificações
         working-directory: projeto/meu_caderno_social_flutter
-        run: flutter pub add flutter_local_notifications:^18.0.1
+        run: |
+          sed -i 's/flutter_local_notifications: \^17\.3\.0/flutter_local_notifications: ^18.0.1/' pubspec.yaml
+          grep flutter_local_notifications pubspec.yaml
 
       - name: Instalar dependências
         working-directory: projeto/meu_caderno_social_flutter
@@ -53,3 +55,5 @@ jobs:
         with:
           name: Meu-Caderno-Social
           path: projeto/meu_caderno_social_flutter/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          
