@@ -1,3 +1,4 @@
+
 name: Gerar APK Android
 
 on:
@@ -28,16 +29,16 @@ jobs:
         run: |
           ZIP_FILE=$(find . -maxdepth 1 -name '*.zip' | head -n 1)
           test -n "$ZIP_FILE"
-          mkdir projeto
-          unzip "$ZIP_FILE" -d projeto
+          mkdir -p projeto
+          unzip -o "$ZIP_FILE" -d projeto
 
       - name: Preparar Android
         working-directory: projeto/meu_caderno_social_flutter
         run: flutter create --platforms=android --project-name meu_caderno_social .
-      - name: Corrigir versão das notificações
+
+      - name: Atualizar notificações
         working-directory: projeto/meu_caderno_social_flutter
-        run: |
-          sed -i 's/flutter_local_notifications: \^17\.3\.0/flutter_local_notifications: ^18.0.1/' pubspec.yaml
+        run: flutter pub add flutter_local_notifications:^18.0.1
 
       - name: Instalar dependências
         working-directory: projeto/meu_caderno_social_flutter
